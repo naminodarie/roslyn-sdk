@@ -135,6 +135,24 @@ namespace Microsoft.CodeAnalysis.Testing
             }.RunAsync();
         }
 
+        [Fact]
+        public async Task AddMultiLineCommentFileToEmptyProject()
+        {
+            await new CSharpSourceGeneratorTest<AddMultiLineCommentFile>
+            {
+                TestState =
+                {
+                    Sources =
+                    {
+                    },
+                    GeneratedSources =
+                    {
+                        (typeof(AddMultiLineCommentFile), "MultiLineCommentGeneratedFile.cs", "\r\n// Comment1\r\n// Comment2"),
+                    },
+                },
+            }.RunAsync();
+        }
+
         private class CSharpSourceGeneratorTest<TSourceGenerator> : SourceGeneratorTest<DefaultVerifier>
             where TSourceGenerator : ISourceGenerator, new()
         {
