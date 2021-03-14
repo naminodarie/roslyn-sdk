@@ -135,6 +135,26 @@ namespace Microsoft.CodeAnalysis.Testing
             }.RunAsync();
         }
 
+        [Fact]
+        public async Task AddFileWithSimpleAttribute()
+        {
+            await new CSharpSourceGeneratorTest<AddSimpleAttribute>
+            {
+                TestBehaviors = TestBehaviors.SkipGeneratedSourcesCheck,
+                TestState =
+                {
+                    Sources =
+                    {
+                        @"[Simple]class S {}",
+                    },
+                    GeneratedSources =
+                    {
+                        (typeof(AddSimpleAttribute), "SimpleAttribute.cs", "using System;[AttributeUsage(AttributeTargets.All)] internal sealed class SimpleAttribute : Attribute { }"),
+                    },
+                },
+            }.RunAsync();
+        }
+
         private class CSharpSourceGeneratorTest<TSourceGenerator> : SourceGeneratorTest<DefaultVerifier>
             where TSourceGenerator : ISourceGenerator, new()
         {
